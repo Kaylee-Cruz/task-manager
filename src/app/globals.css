@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+/* ============================================================
+   DESIGN TOKENS — "Colorful" direction
+   Why custom properties instead of hardcoding hex values in
+   every component: if the palette needs to change later, it
+   changes in ONE place instead of forty className strings.
+   ============================================================ */
+:root {
+  --color-cream: #fff8f0; /* page background */
+  --color-card: #ffffff; /* task card background */
+  --color-ink: #2d2a32; /* primary text */
+  --color-ink-soft: #6f6a78; /* secondary text */
+
+  --color-coral: #ff6b6b; /* delete / danger actions */
+  --color-teal: #2fb8a6; /* done / toggle / success */
+  --color-sunflower: #ffc93c; /* add / primary action */
+  --color-violet: #8e5ce8; /* stats / highlights */
+
+  --radius-playful: 1.25rem;
+}
+
+/* @theme inline maps our custom properties to real Tailwind
+   utility classes — e.g. --color-coral below is what makes
+   bg-coral / text-coral / border-coral exist as usable classes,
+   and --radius-playful is what makes rounded-playful exist. */
+@theme inline {
+  --color-cream: var(--color-cream);
+  --color-card: var(--color-card);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-coral: var(--color-coral);
+  --color-teal: var(--color-teal);
+  --color-sunflower: var(--color-sunflower);
+  --color-violet: var(--color-violet);
+  --radius-playful: var(--radius-playful);
+  /* System font stacks — no external network request needed,
+     so the app has zero third-party font dependencies. Rounded
+     system fonts (e.g. SF Rounded on Mac) get picked up
+     automatically where available for the playful display look. */
+  --font-display: ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+}
