@@ -17,6 +17,12 @@ To build and run a production version locally:
 npm run build
 npm run start
 ```
+## Technologies used
+
+- **Next.js 16** (App Router) — routing and project structure
+- **React 19** — component state and UI (useState, useEffect)
+- **Tailwind CSS v4** — styling, using `@theme inline` for custom design tokens
+- **localStorage** — persists tasks in the browser between sessions
 
 ## Design decisions
 
@@ -39,11 +45,26 @@ like `bg-coral` or `text-violet` are available everywhere.
   external font dependency.
 
 ## File structure
+
+```
+src/
+├── app/
+│   ├── layout.js       # root layout
+│   ├── page.js         # entry point, renders TaskBoard
+│   └── globals.css     # color palette + design tokens
+└── components/
+    ├── TaskBoard.js     # owns all task state and filter logic
+    ├── AddTaskForm.js   # input for creating a new task
+    ├── TaskList.js      # renders the filtered list of tasks
+    ├── TaskCard.js       # single task row (toggle/delete)
+    ├── FilterBar.js      # All / Active / Done filter buttons
+    └── TaskStats.js       # total/active/done counts + clear button
+```
 ## AI Usage Log
 
+- Used Claude to debug a blank-page error on `npm run dev`, traced to an unsaved `TaskBoard.js` file.
+- Collaborated with Claude to design the custom color palette and assign semantic roles to each accent color.
+- Used Claude to diagnose a localStorage bug where tasks weren't persisting on refresh — fixed by sequencing the load/save effects correctly.p. I learned that there was an issue with the local storage and I had to edit my TaskBoard.js file to fix it. 
+## What I learned
 
--I asked Claude to help me with figuring out what the error was that the terminal was giving me when I tried running npm run dev. I sent it a screenshot of the error. It replied with different solutions. One was that my TaskBoard.js file was in the wrong location. The other solution was that it may not have been properly saved. The issue ended up being that I forgot to save my TaskBoard.js file properly so it came up blank when the terminal tried to run the command. I learned to always save my files when finishing.
-
--I asked Claude to help me come up with a colorful palette for the website and it created a custom palette. I learned how to assign roles to specific colors in order to maintain a cleaner code. 
-
--I ran into a problem with my website where when I refreshed it did not save all of the tasks I had previously loaded. Claude helped me figure out the error in my code and why it was showing up. I learned that there was an issue with the local storage and I had to edit my TaskBoard.js file to fix it. 
+Building this project helped me understand how React manages state that multiple components need to share — rather than each component tracking its own copy of the task list, TaskBoard owns the data and passes it down through props, which keeps everything in sync automatically. I also learned why array updates need to create new arrays instead of mutating the old one (using `.map()` and `.filter()` instead of `.push()`), since React relies on detecting a new reference to know it should re-render. Debugging the localStorage persistence issue taught me about the order effects run in — I had to make sure the "load from storage" effect finished before the "save to storage" effect could run, or it would silently overwrite my saved data.
